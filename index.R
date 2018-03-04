@@ -57,3 +57,9 @@ response <- GET(uri)
 print(response)
 body <- fromJSON(content(response, "text"))
 print(body)
+
+data <- flatten(body) %>%
+  filter(published == TRUE) %>%
+  # mutate(body = as.data.frame(body.legacy)) %>%
+  filter(length(body) > 0)
+# print(data)
