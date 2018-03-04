@@ -24,7 +24,7 @@ the.ui <- fluidPage(
       # These checkboxes will allow user to 
       checkboxGroupInput("category", label = h3("Categories of Study"), 
                          choices = unique(body$category)
-                         )
+      )
     ),
     
     # Main panel for displaying outputs
@@ -38,5 +38,3 @@ the.ui <- fluidPage(
     )
   )
 )
-
-
