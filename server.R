@@ -1,22 +1,15 @@
 the.server <- function(input, output) {
   
+  # DEPENDENCIES 
   # install.packages("shiny")
   # install.packages("dplyr")
   # install.packages("tidyr")
-  # install.packages("countrycode")
   # install.packages("ggplot2")
-  # install.packages("maps")
-  # install.packages("sp")
-  # install.packages("maptools")
   
   # library("shiny")
   # library("dplyr")
   # library("tidyr")
-  # library("countrycode")
   # library("ggplot2")
-  # library("maps")
-  # library("sp")
-  # library("maptools")
   
   # imports Joel Ross's provided script that takes latitude and longitude and returns a country name
   # source("spatial_utils.R")

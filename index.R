@@ -1,10 +1,6 @@
-# DEPENDENCIES
-# install.packages('shiny')
-library(shiny)
-
 # IMPORTS
-relative.path <- '~info201/INFO201-Final-Project'
-setwd(relative.path)
+# relative.path <- '~info201/INFO201-Final-Project'
+# setwd(relative.path)
 
 # emissions.data <- read.csv(
 #   './data/WDI_emissions_Data.csv',
