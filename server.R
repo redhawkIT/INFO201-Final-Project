@@ -1,32 +1,11 @@
 library("shiny")
-
 library("ggplot2")
-
 library("dplyr")
-
 library("tidyr")
-
-#source("")
-
-#data <- 
 
 the.server <- function(input, output) {
   
-<<<<<<< HEAD
-  # DEPENDENCIES 
-  # install.packages("shiny")
-  # install.packages("dplyr")
-  # install.packages("tidyr")
-  # install.packages("ggplot2")
-  
-  # library("shiny")
-  # library("dplyr")
-  # library("tidyr")
-  # library("ggplot2")
-  
-  # imports Joel Ross's provided script that takes latitude and longitude and returns a country name
-  # source("spatial_utils.R")
-=======
+
   output$ui <- renderUI({
     switch(input$tab,
               "graph" = NULL,
@@ -55,7 +34,6 @@ the.server <- function(input, output) {
     return()
     
   })
->>>>>>> 7e998eb06d78c6182414301762530ef86b2e3ef5
   
   output$table <- renderTable({
 
@@ -79,12 +57,6 @@ the.server <- function(input, output) {
          main = "Title of Histogram",
          col = "#75AADB", border = "white")
 
-  })
-  
-  placeholder3 <- reactive({
-    
-    return()
-    
   })
   
   output$summary <- renderTable({
