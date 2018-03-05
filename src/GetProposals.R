@@ -17,13 +17,14 @@ GetProposals <- function() {
 
   response <- GET(uri)
   proposals <-  fromJSON(httr::content(response, 'text'))
-  # rownames(proposals) <- proposals[[1]]
 
   # Select legacy proposal data
   data <- flatten(proposals) %>%
     filter(published == TRUE) %>%
     filter(length(body.legacy) > 0) %>%
     select(
+      # Backtick syntax allows us to select columns with whitespace/special chars
+      'ID' = `_id`,
       'Title' = title,
       'Year' = year,
       'Quarter' = quarter,
@@ -34,6 +35,9 @@ GetProposals <- function() {
       'Asked' = asked,
       'Received' = received
     )
+  # Set rownames as UUIDS (can't be done in dplyr pipes)
+  rownames(data) <- data$ID
+  data$ID <- NULL
 
   return(data)
 }

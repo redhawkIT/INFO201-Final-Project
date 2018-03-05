@@ -9,11 +9,22 @@ AnalyzeProposals <- function(proposals) {
     text <- paste(proposals$Content[[i]]$body, collapse = '')
     proposals$Text[[i]] <- text
   }
+
   # Analyze the sentiment using the NRC datasource and syuzhet
-  sentiments <- get_nrc_sentiment(proposals$Text)
-  sentiment.data <- data.frame(sentiments)
-  sentiment.analysis <- sentiment.data %>%
-    mutate(Valence = positive / negative) %>%
-    merge(proposals)
-  return(sentiment.analysis)
+  sentiments <- data.frame(get_nrc_sentiment(proposals$Text))
+  sentiment.analysis <- sentiments %>%
+    mutate(Valence = positive / negative)
+
+  # Set common rownames, then merge based on them
+  # (merge by=0 is the same as merging by rownames, and it adds the Row.names col in the process)
+  rownames(sentiment.analysis) <- rownames(proposals)
+  analysis <- merge(proposals, sentiment.analysis, by=0, all=TRUE)
+
+  # We're done with the temp Row.names col and Content - delete them
+  analysis[['Row.names']] <- NULL
+  analysis$Content <- NULL
+  
+  # Return proposals with an analysis of their emotional valence.
+  # NOTE: SOME VALUES MAY BE GENERIC. This is because we are using a placeholder iterator for development
+  return(analysis)
 }
