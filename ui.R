@@ -1,6 +1,6 @@
 the.ui <- fluidPage(
   # App title ----
-  titlePanel('Best AC Group's Final Project'),
+  titlePanel("Best AC Group's Final Project"),
 
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
@@ -20,11 +20,10 @@ the.ui <- fluidPage(
       checkboxGroupInput(
         'category',
         label = h3('Categories of Request to Include in Analysis'),
-        choices = unique(body$category)
+        # BUG: Merging broke this - any way to recover it?
+        choices = unique(proposals$category)
       ),
-
       uiOutput('ui')
-
     ),
 
     # Main panel for displaying outputs

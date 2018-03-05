@@ -1,23 +1,22 @@
-# DEPENDENCIES
-
-# Utilities
+## DEPENDENCIES
+### Utilities
 # install.packages('Hmisc')
 # Web Packages
 # install.packages('shiny')
 # install.packages('httr')
 # install.packages('jsonlite')
-# Data Manipulation:
+### Data Manipulation:
 # install.packages('dplyr')
 # install.packages('tidyr')
-# Text Mining:
+### Text Mining:
 # install.packages('tidytext')
 # install.packages('tm')
 # install.packages('SnowballC')
 # install.packages('syuzhet')
-# Visualization:
+### Visualization:
 # install.packages('ggplot2')
 
-# library(shiny)
+library(shiny)
 library(Hmisc)
 library(httr)
 library(jsonlite)
@@ -29,17 +28,17 @@ library(syuzhet)
 library(SnowballC)
 library(ggplot2)
 
-# IMPORTS
+## IMPORTS
 source('./src/GetProposals.R')
 source('./src/AnalyzeProposals.R')
 
-# DATA COLLECTION & ANALYSIS
+## DATA COLLECTION & ANALYSIS
 proposals <- GetProposals()
 analysis <- AnalyzeProposals(proposals)
 
-# WEB SERVER
-# source('./ui.R')
-# source('./server.R')
-#
-# START APPLICATION
+## WEB SERVER
+source('./ui.R')
+source('./server.R')
+
+## START APPLICATION
 # shinyApp(ui = the.ui, server = the.server)

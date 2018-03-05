@@ -27,42 +27,32 @@ the.server <- function(input, output) {
 
   placeholder1 <- reactive({
     positivity <- input$range
-
     year.filter <- input$years
-
     categories <- input$category
-
     filtered.data <- data
-
     return()
-
   })
 
   output$table <- renderTable({
     placeholder1()
-
   })
 
   placeholder2 <- reactive({
     return()
-
   })
 
   output$graph <- renderPlot({
     dist <- input$dist
-
     n <- input$n
 
     hist(placeholder2(),
          main = 'Title of Histogram',
          col = '#75AADB',
          border = 'white')
-
   })
 
   output$summary <- renderTable({
     placeholder3
-
   })
 
 }
