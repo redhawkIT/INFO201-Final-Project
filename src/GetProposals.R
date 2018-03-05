@@ -5,19 +5,20 @@
 # data are open and free to query.
 GetProposals <- function() {
   # Query for all proposals before this fiscal year (when the STF changed their RFP and text format)
-  # https://uwstf.org/v2/proposal/?query={"year":"<2018"}&populate=["body"]
-  stf.api <- "https://uwstf.org/v2"
+  # https://uwstf.org/v2/proposal/?query={'year':'<2018'}&populate=['body']
+  stf.api <- 'https://uwstf.org/v2'
   model <- 'proposal'
   query <- '"year":"<2018"'
   populate <- '"body"'
-  
-  resource <- sprintf('/%s/?query={%s}&populate=[%s]', model, query, populate)
+
+  resource <-
+    sprintf('/%s/?query={%s}&populate=[%s]', model, query, populate)
   uri <- paste0(stf.api, resource)
-  
+
   response <- GET(uri)
-  proposals <-  fromJSON(httr::content(response, "text"))
+  proposals <-  fromJSON(httr::content(response, 'text'))
   # rownames(proposals) <- proposals[[1]]
-  
+
   # Select legacy proposal data
   data <- flatten(proposals) %>%
     filter(published == TRUE) %>%
