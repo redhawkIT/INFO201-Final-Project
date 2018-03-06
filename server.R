@@ -32,7 +32,7 @@ the.server <- function(input, output) {
   })
 
   output$table <- renderTable({
-    placeholder1()
+    filtered() %>% select(Title, Organization, Asked, Received, Negative, Positive, Valence)
   })
 
 

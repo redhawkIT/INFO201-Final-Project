@@ -48,7 +48,7 @@ the.ui <- fluidPage(
         # creates a table based on the static UI filters.
         #tabPanel('Test', tableOutput('test')),
         tabPanel('Graphical Analyis', value = 'graph'),
-        tabPanel('Tabular Analysis', value = 'table') ,
+        tabPanel('Tabular Analysis', tableOutput('table')) ,
         tabPanel('Summary Table', value = 'summary')
       )
     )
