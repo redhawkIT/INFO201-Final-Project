@@ -10,14 +10,14 @@ GetProposals <- function() {
   model <- 'proposal'
   query <- '"year":"<2018"'
   populate <- '"body"'
-
+  
   resource <-
     sprintf('/%s/?query={%s}&populate=[%s]', model, query, populate)
   uri <- paste0(stf.api, resource)
-
+  
   response <- GET(uri)
   proposals <-  fromJSON(httr::content(response, 'text'))
-
+  
   # Select legacy proposal data
   data <- flatten(proposals) %>%
     filter(published == TRUE) %>%
@@ -33,11 +33,28 @@ GetProposals <- function() {
       'Content' = body.legacy,
       'Status' = status,
       'Asked' = asked,
-      'Received' = received
+      'Received' = received,
+      'Endorsements' = comments
     )
-  # Set rownames as UUIDS (can't be done in dplyr pipes)
+  
+  # Iterate through proposals, patching holes in data
+  for (i in 1:length(data$ID)) {
+    # Set endorsement count
+    data$Endorsements[[i]] <- length(data$Endorsements[[i]])
+    # Fix n/a values in the Received field
+    if (is.na(data$Received[[i]]) || data$Received[[i]] <= 0) {
+      data$Received[[i]] <- 0
+    }
+    # Create a boolean for Approved - for exploratory analysis
+    if (data$Status[[i]] == 'Funded' || data$Status[[i]] == 'Partially Funded') {
+      data$Approved[[i]] <- TRUE
+    } else {
+      data$Approved[[i]] <- FALSE
+    }
+  }
+  # Set rownames as UUIDS (can't be done in dplyr pipes) and delete the original col
   rownames(data) <- data$ID
   data$ID <- NULL
 
-  return(data)
+ return(data)
 }
