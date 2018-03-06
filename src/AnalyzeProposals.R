@@ -12,7 +12,7 @@ AnalyzeProposals <- function(proposals) {
 
   # Calculate valence scores based on Positive vs Negative sentiments
   sentiment.analysis <- sentiments %>%
-    mutate(Valence = Positive / Negative)
+    mutate(Valence = Positive / (ifelse(Negative==0, 1, Negative)))
 
   # Set common rownames, then merge based on them
   # (merge by=0 is the same as merging by rownames, and it adds the Row.names col in the process)
