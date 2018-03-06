@@ -3,7 +3,7 @@ AnalyzeProposals <- function(proposals) {
   # a few times so as to not kill our workstations when developing
   # end.value <- 8
   end.value <- length(proposals$Content)
-  
+
   # Concatenate the raw text presented in a proposal
   for (i in 1:end.value) {
     text <- paste(proposals$Content[[i]]$body, collapse = '')
@@ -23,7 +23,7 @@ AnalyzeProposals <- function(proposals) {
   # We're done with the temp Row.names col and Content - delete them
   analysis[['Row.names']] <- NULL
   analysis$Content <- NULL
-  
+
   # Return proposals with an analysis of their emotional valence.
   # NOTE: SOME VALUES MAY BE GENERIC. This is because we are using a placeholder iterator for development
   return(analysis)
