@@ -9,10 +9,10 @@ the.ui <- fluidPage(
       # This slider will allow user to filter ouptuded data based on range of sentiments.
       sliderInput(
         'range',
-        label = h3('How Positive Will the Proposal Be?'),
-        min = -5,
-        max = 5,
-        value = c(-1, 2),
+        label = h3('Valence Filter'),
+        min = 0,
+        max = 30,
+        value = 15,
         width = '200%',
         round = FALSE
       ),
@@ -20,10 +20,11 @@ the.ui <- fluidPage(
       checkboxGroupInput(
         'category',
         label = h3('Categories of Request to Include in Analysis'),
-        # BUG: Merging broke this - any way to recover it?
-        choices = unique(proposals$category)
+        choices = unique(proposals$Category)
       ),
+      
       uiOutput('ui')
+      
     ),
 
     # Main panel for displaying outputs

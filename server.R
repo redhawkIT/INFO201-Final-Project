@@ -2,7 +2,24 @@ the.server <- function(input, output) {
   output$ui <- renderUI({
     switch(
       input$tab,
-      'graph' = NULL,
+      'graph' = checkboxGroupInput(
+        'years',
+        label = h3('Which years to include?'),
+        choices = list(
+          '2014' = 2014,
+          '2015' = 2015,
+          '2016' = 2016,
+          '2017' = 2017
+        )
+      ),
+      sliderInput(
+        'range',
+        label = h3('Which Years to Compare?'),
+        min = 2014,
+        max = 2017,
+        value = c(2014, 2017),
+        sep = ''
+      ),
       'table' = checkboxGroupInput(
         'years',
         label = h3('Which years to include?'),
