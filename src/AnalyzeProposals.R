@@ -1,9 +1,9 @@
-# end.value is a temp variable - we'll only iterate through proposals
-# a few times so as to not kill our workstations when developing
-# end.value <- length(proposals$content)
-end.value <- 8
-
 AnalyzeProposals <- function(proposals) {
+  # end.value is a temp variable - we'll only iterate through proposals
+  # a few times so as to not kill our workstations when developing
+  # end.value <- 8
+  end.value <- length(proposals$Content)
+  
   # Concatenate the raw text presented in a proposal
   for (i in 1:end.value) {
     text <- paste(proposals$Content[[i]]$body, collapse = '')

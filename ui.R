@@ -21,7 +21,7 @@ the.ui <- fluidPage(
         'category',
         label = h3('Categories of Request to Include in Analysis'),
         # BUG: Merging broke this - any way to recover it?
-        choices = unique(proposals$category)
+        choices = unique(analysis$Category)
       ),
       uiOutput('ui')
     ),
