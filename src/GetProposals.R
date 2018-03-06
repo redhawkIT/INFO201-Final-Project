@@ -3,41 +3,48 @@
 # Per the Open Public Meetings Act (OPMA), the organization
 # is obligated to provide open data. All routes pertaining to proposal
 # data are open and free to query.
-GetProposals <- function() {
-  # Query for all proposals before this fiscal year (when the STF changed their RFP and text format)
-  # https://uwstf.org/v2/proposal/?query={'year':'<2018'}&populate=['body']
-  stf.api <- 'https://uwstf.org/v2'
-  model <- 'proposal'
-  query <- '"year":"<2018"'
-  populate <- '"body"'
+#GetProposals <- function() {
+# Query for all proposals before this fiscal year (when the STF changed their RFP and text format)
+# https://uwstf.org/v2/proposal/?query={'year':'<2018'}&populate=['body']
+stf.api <- 'https://uwstf.org/v2'
+model <- 'proposal'
+query <- '"year":"<2018"'
+populate <- '"body"'
 
-  resource <-
-    sprintf('/%s/?query={%s}&populate=[%s]', model, query, populate)
-  uri <- paste0(stf.api, resource)
+resource <-
+  sprintf('/%s/?query={%s}&populate=[%s]', model, query, populate)
+uri <- paste0(stf.api, resource)
 
-  response <- GET(uri)
-  proposals <-  fromJSON(httr::content(response, 'text'))
+response <- GET(uri)
+proposals <-  fromJSON(httr::content(response, 'text'))
 
-  # Select legacy proposal data
-  data <- flatten(proposals) %>%
-    filter(published == TRUE) %>%
-    filter(length(body.legacy) > 0) %>%
-    select(
-      # Backtick syntax allows us to select columns with whitespace/special chars
-      'ID' = `_id`,
-      'Title' = title,
-      'Year' = year,
-      'Quarter' = quarter,
-      'Organization' = organization,
-      'Category' = category,
-      'Content' = body.legacy,
-      'Status' = status,
-      'Asked' = asked,
-      'Received' = received
-    )
-  # Set rownames as UUIDS (can't be done in dplyr pipes)
-  rownames(data) <- data$ID
-  data$ID <- NULL
-
-  return(data)
+# Select legacy proposal data
+data <- flatten(proposals) %>%
+  filter(published == TRUE) %>%
+  filter(length(body.legacy) > 0) %>%
+  select(
+    # Backtick syntax allows us to select columns with whitespace/special chars
+    'ID' = `_id`,
+    'Title' = title,
+    'Year' = year,
+    'Quarter' = quarter,
+    'Organization' = organization,
+    'Category' = category,
+    'Content' = body.legacy,
+    'Status' = status,
+    'Asked' = asked,
+    'Received' = received,
+    'Endorsements' = comments
+  )
+for (i in 1:length(data$ID)) {
+  data$Endorsements[[i]] <- length(data$Endorsements[[i]])
+  if(is.na(data$Received[[i]]) || data$Received[[i]] <= 0) {
+    data$Received[[i]] <- 0
+  }
 }
+# Set rownames as UUIDS (can't be done in dplyr pipes)
+rownames(data) <- data$ID
+data$ID <- NULL
+
+# return(data)
+#}
