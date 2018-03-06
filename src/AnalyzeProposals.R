@@ -28,4 +28,3 @@ AnalyzeProposals <- function(proposals) {
   # NOTE: SOME VALUES MAY BE GENERIC. This is because we are using a placeholder iterator for development
   return(analysis)
 }
->>>>>>> 013de85fd664129d74e95c552ccdb7b9cf9a0499
