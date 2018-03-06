@@ -37,8 +37,8 @@ proposals <- GetProposals()
 analysis <- AnalyzeProposals(proposals)
 
 ## WEB SERVER
-source('./ui.R')
-source('./server.R')
+# source('./ui.R')
+# source('./server.R')
 
 ## START APPLICATION
 # shinyApp(ui = the.ui, server = the.server)

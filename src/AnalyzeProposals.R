@@ -11,9 +11,11 @@ AnalyzeProposals <- function(proposals) {
   }
 
   # Analyze the sentiment using the NRC datasource and syuzhet
+  # (capitalize colnames too)
   sentiments <- data.frame(get_nrc_sentiment(proposals$Text))
+  colnames(sentiments) <- capitalize(colnames(sentiments))
   sentiment.analysis <- sentiments %>%
-    mutate(Valence = positive / negative)
+    mutate(Valence = Positive / Negative)
 
   # Set common rownames, then merge based on them
   # (merge by=0 is the same as merging by rownames, and it adds the Row.names col in the process)
