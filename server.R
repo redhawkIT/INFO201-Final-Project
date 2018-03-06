@@ -34,7 +34,7 @@ the.server <- function(input, output) {
   })
 
   output$table <- renderTable({
-    placeholder1()
+    d()
   })
 
   placeholder2 <- reactive({
