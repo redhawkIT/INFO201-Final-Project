@@ -23,6 +23,17 @@ the.ui <- fluidPage(
         choices = unique(proposals$Category)
       ),
       
+      checkboxGroupInput(
+        'year',
+        label = h3('Which years to include?'),
+        choices = list(
+          '2014' = 2014,
+          '2015' = 2015,
+          '2016' = 2016,
+          '2017' = 2017
+        )
+      ),
+      
       uiOutput('ui')
       
     ),
@@ -33,6 +44,7 @@ the.ui <- fluidPage(
         type = 'tabs',
         id = 'tab',
         # Would be a historgram of the
+        tabPanel('Test', value = 'filtered'),
         tabPanel('Graphical Analyis', value = 'graph'),
         tabPanel('Tabular Analysis', value = 'table') ,
         tabPanel('Summary Table', value = 'summary')

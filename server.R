@@ -1,28 +1,24 @@
 the.server <- function(input, output) {
+  
+  # TODO
+  # to be changed to 'reactive' because end user will not see this value
+  # filtered <- reactive({ 
+  #   filtered <- analysis %>% filter(
+  #     Valence <= input$range 
+  #     & Year == input$year
+  #     & Catrgory == input$category
+  #   )
+  # })
+  # 
+  # output$test <- verbatimTextOutput({
+  #   filtered()
+  # })
+  
   output$ui <- renderUI({
     switch(
       input$tab,
-      'graph' = checkboxGroupInput(
-        'years',
-        label = h3('Which years to include?'),
-        choices = list(
-          '2014' = 2014,
-          '2015' = 2015,
-          '2016' = 2016,
-          '2017' = 2017
-        )
-      ),
-      'table' = checkboxGroupInput(
-        'years',
-        label = h3('Which years to include?'),
-        choices = list(
-          '2014' = 2014,
-          '2015' = 2015,
-          '2016' = 2016,
-          '2017' = 2017
-        ),
-        selected = 2014
-      ),
+      'graph' = NULL,
+      'table' = NULL,
       'summary' =  sliderInput(
         'range',
         label = h3('Which Years to Compare?'),
