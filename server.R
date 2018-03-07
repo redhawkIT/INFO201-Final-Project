@@ -2,12 +2,34 @@ the.server <- function(input, output) {
 
   
   filtered <- reactive({
-    filt <- analysis %>% filter(
-      Valence <= input$range
-      & Year == input$year
-      & Category == input$category
+    if (is.null(input$year) | is.null(input$category)) {
+      if (is.null(input$year) & !is.null(input$category)) {
+        return(
+          analysis %>% filter(
+            Valence <= input$range
+            & Category == input$category
+          )
+        )
+      } else if (is.null(input$category) & !is.null(input$year)) {
+        analysis %>% filter(
+          Valence <= input$range
+          & Year == input$year
+        )
+      } else {
+        return(
+          analysis %>% filter(
+            Valence <= input$range
+          )
+        )
+      }
+    } else
+    return(
+      analysis %>% filter(
+        Valence <= input$range
+        & Year == input$year
+        & Category == input$category
+      )
     )
-    return(filt)
   })
   
   # Makes table test that returns a full proposals table of 
