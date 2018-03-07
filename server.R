@@ -61,12 +61,19 @@ the.server <- function(input, output) {
   output$graph <- renderPlot({
     dist <- input$dist
     n <- input$n
-
-    hist(placeholder2(),
-         main = 'Title of Histogram',
-         col = '#75AADB',
-         border = 'white')
+    filtered.table <- filtered()
+    emotions <- select(filtered.table, Anger, Anticipation, Disgust, Fear, Sadness, Surprise, Trust)
+    emotions.means <- c(mean(emotions$Anger), mean(emotions$Anticipation), mean(emotions$Disgust),
+                        mean(emotions$Fear), mean(emotions$Sadness), mean(emotions$Surprise),
+                        mean(emotions$Trust))
+    barplot(emotions.means, main = "Average Emotion for Given Categories",
+            xlab = "Emotions",
+            names.arg = colnames(emotions),
+            col = c("red", "orange", "yellow", "green",
+                    "blue", "purple", "black"))
+    
   })
+  
 
   output$summary <- renderTable({
     placeholder3
