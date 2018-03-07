@@ -20,15 +20,15 @@ the.server <- function(input, output) {
       input$tab,
       'graph' = NULL,
       'table' = NULL,
-      'summary' =  sliderInput(
-        'range',
-        label = h3('Which Years to Compare?'),
-        min = 2014,
-        max = 2017,
-        value = c(2014, 2017),
-        sep = ''
+      'summary' = NULL
+        # sliderInput(
+        # 'range',
+        # label = h3('Which Years to Compare?'),
+        # min = 2014,
+        # max = 2017,
+        # value = c(2014, 2017),
+        # sep = ''
       )
-    )
   })
 
   output$table <- renderTable({
