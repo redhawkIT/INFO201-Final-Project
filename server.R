@@ -45,9 +45,18 @@ the.server <- function(input, output) {
          col = '#75AADB',
          border = 'white')
   })
+  
+  sum.data <- reactive({
+    category.sums <- group_by(filtered(), Category) %>% 
+      summarize(Avg.amount.asked = mean(Asked), Avg.amount.received = mean(Received),
+                Max.received = max(Received), Median.recieved = median(Received), Standard.dev = sd(Received))
+    return(list(cat = category.sums))
+  })
 
   output$summary <- renderTable({
-    placeholder3
+    sum.data()$cat
   })
 
 }
+
+

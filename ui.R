@@ -49,7 +49,7 @@ the.ui <- fluidPage(
         #tabPanel('Test', tableOutput('test')),
         tabPanel('Graphical Analyis', value = 'graph'),
         tabPanel('Tabular Analysis', tableOutput('table')) ,
-        tabPanel('Summary Table', value = 'summary')
+        tabPanel('Summary Table', tableOutput('summary'))
       )
     )
   )
