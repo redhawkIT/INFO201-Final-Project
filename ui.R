@@ -16,14 +16,10 @@ sidebarLayout(
     sliderInput(
       'range',
       label = h3('Valence Filter'),
-      min = ceiling(max(minVal))[1],
-      max = floor(analysis$Valence[analysis$Valence == max(analysis$Valence)])[1],
-      # TODO: Can someone please check out the following lines and see what the issue is with non-binary arguments?
-      # Error in min + max : non-numeric argument to binary operator
-      # Thrown with shiny v 1.0.5 (@latest) regardless of if I cast the values or not
-      # value = as.numeric(floor((min + max) / 2)),
-      value = 5, # NOTE: Placeholder value
+      min = as.numeric(ceiling(max(minVal))),
+      max = as.numeric(floor(analysis$Valence[analysis$Valence == max(analysis$Valence)]))[1],
       step = 1,
+      value = as.numeric(ceiling(max(minVal))), 
       width = '200%',
       round = FALSE
     ),
