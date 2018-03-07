@@ -1,16 +1,17 @@
 the.server <- function(input, output) {
 
-  # TODO
-  # to be changed to 'reactive' because end user will not see this value
-  # filtered <- reactive({
-  #   filtered <- analysis %>% filter(
-  #     Valence <= input$range
-  #     & Year == input$year
-  #     & Catrgory == input$category
-  #   )
-  # })
-  #
-  # output$test <- verbatimTextOutput({
+  
+  filtered <- reactive({
+    filt <- analysis %>% filter(
+      Valence <= input$range
+      & Year == input$year
+      & Category == input$category
+    )
+    return(filt)
+  })
+  
+  # Makes table test that returns a full proposals table of 
+  # output$test <-  renderTable({
   #   filtered()
   # })
 
@@ -30,21 +31,10 @@ the.server <- function(input, output) {
     )
   })
 
-  placeholder1 <- reactive({
-    positivity <- input$range
-    year.filter <- input$years
-    categories <- input$category
-    filtered.data <- data
-    return()
-  })
-
   output$table <- renderTable({
-    placeholder1()
+    filtered() %>% select(Title, Organization, Asked, Received, Negative, Positive, Valence)
   })
 
-  placeholder2 <- reactive({
-    return()
-  })
 
   output$graph <- renderPlot({
     dist <- input$dist

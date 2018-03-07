@@ -20,7 +20,8 @@ the.ui <- fluidPage(
       checkboxGroupInput(
         'category',
         label = h3('Categories of Request to Include in Analysis'),
-        choices = unique(proposals$Category)
+        choices = unique(proposals$Category),
+        selected = 'Portable'
       ),
       
       checkboxGroupInput(
@@ -30,8 +31,8 @@ the.ui <- fluidPage(
           '2014' = 2014,
           '2015' = 2015,
           '2016' = 2016,
-          '2017' = 2017
-        )
+          '2017' = 2017),
+        selected = '2017'
       ),
       
       uiOutput('ui')
@@ -43,10 +44,11 @@ the.ui <- fluidPage(
       tabsetPanel(
         type = 'tabs',
         id = 'tab',
-        # Would be a historgram of the
-        tabPanel('Test', value = 'filtered'),
+        # Displays a table of 'test', which calls 'filtered()', a reactive filter that
+        # creates a table based on the static UI filters.
+        #tabPanel('Test', tableOutput('test')),
         tabPanel('Graphical Analyis', value = 'graph'),
-        tabPanel('Tabular Analysis', value = 'table') ,
+        tabPanel('Tabular Analysis', tableOutput('table')) ,
         tabPanel('Summary Table', value = 'summary')
       )
     )
