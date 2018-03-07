@@ -1,3 +1,5 @@
+minVal <- group_by(analysis, Year) %>% summarize(mins = min(Valence)) %>% select(mins)
+
 the.ui <- fluidPage(
   # App title ----
   titlePanel("Best AC Group's Final Project"),
@@ -10,9 +12,10 @@ the.ui <- fluidPage(
       sliderInput(
         'range',
         label = h3('Valence Filter'),
-        min = 0,
-        max = 30,
-        value = 15,
+        min = ceiling(max(minVal))[1],
+        max = floor(analysis$Valence[analysis$Valence == max(analysis$Valence)])[1],
+        value = ((min + max) / 2),
+        step = 1,
         width = '200%',
         round = FALSE
       ),
