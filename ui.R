@@ -14,7 +14,8 @@ the.ui <- fluidPage(
         label = h3('Valence Filter'),
         min = ceiling(max(minVal))[1],
         max = floor(analysis$Valence[analysis$Valence == max(analysis$Valence)])[1],
-        value = as.numeric(floor((min + max) / 2)),
+        #value = as.numeric(floor((min + max) / 2)),
+        value = 15,
         step = 1,
         width = '200%',
         round = FALSE
@@ -52,7 +53,7 @@ the.ui <- fluidPage(
         #tabPanel('Test', tableOutput('test')),
         tabPanel('Graphical Analyis', plotOutput('graph')),
         tabPanel('Tabular Analysis', tableOutput('table')) ,
-        tabPanel('Summary Table', tableOutput('summary'))
+        tabPanel('Summary Table', tableOutput('summary'), value = 'sum.ui')
       )
     )
   )

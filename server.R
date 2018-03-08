@@ -42,15 +42,9 @@ the.server <- function(input, output) {
       input$tab,
       'graph' = NULL,
       'table' = NULL,
-      'summary' = NULL
-        # sliderInput(
-        # 'range',
-        # label = h3('Which Years to Compare?'),
-        # min = 2014,
-        # max = 2017,
-        # value = c(2014, 2017),
-        # sep = ''
-      )
+      'sum.ui' = radioButtons('tab.select', "Select a Summarization:", choices = c("1", "2", "3", "4"),
+                              selected = "1")
+    )
   })
 
   output$table <- renderTable({
@@ -79,11 +73,23 @@ the.server <- function(input, output) {
     category.sums <- group_by(filtered(), Category) %>% 
       summarize(Avg.amount.asked = mean(Asked), Avg.amount.received = mean(Received),
                 Max.received = max(Received), Median.recieved = median(Received), Standard.dev = sd(Received))
-    return(list(cat = category.sums))
+    valence.sums <- mutate(filtered(), Valence.Group = cut(filtered()$Valence,
+                                                           breaks = c(0, 5, 10, 15, 20, 25, 30, 35, 40),
+                                                           labels = c("0 - 5", "5 - 10", "10 - 15", "15 - 20",
+                                                                      "20 - 25", "25 - 30", "30 - 35",
+                                                                      "35 - 40")))
+    valence.sums <- group_by(valence.sums, Valence.Group) %>% 
+      summarize(Avg.amount.asked = mean(Asked), Avg.amount.received = mean(Received),
+                Max.received = max(Received), Median.recieved = median(Received), Standard.dev = sd(Received))
+    return(list(cat = category.sums, val = valence.sums))
   })
   
   output$summary <- renderTable({
-    sum.data()$cat
+    if(input$tab.select == '1') {
+      sum.data()$cat
+    } else {
+      sum.data()$val
+    }
   })
 
 }
