@@ -18,22 +18,25 @@ sidebarLayout(
       label = h3('Valence Filter'),
       min = as.numeric(ceiling(max(minVal))),
       max = as.numeric(floor(analysis$Valence[analysis$Valence == max(analysis$Valence)]))[1],
-      step = 1,
+      step = 0.5,
       value = as.numeric(ceiling(max(minVal))), 
-      width = '200%',
+      width = '150%',
       round = FALSE
     ),
+    
+    hr(),
+    tags$i("If all checkboxes in below controls are unselected, results behave as if all are selected for that metric!"),
 
     checkboxGroupInput(
       'category',
-      label = h3('Categories of Request to Include in Analysis'),
+      label = h4('Categories of Request to Include in Analysis'),
       choices = unique(analysis$Category),
       selected = 'Portable'
     ),
 
     checkboxGroupInput(
       'year',
-      label = h3('Which years to include?'),
+      label = h4('Which years to include?'),
       choices = list(
         '2014' = 2014,
         '2015' = 2015,
