@@ -190,4 +190,4 @@ the.server <- function(input, output) {
   output$endo <- renderTable({
     sum.data()$endo
   })
-  
+}
