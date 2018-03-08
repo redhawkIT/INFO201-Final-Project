@@ -56,6 +56,7 @@ sidebarLayout(
         tabPanel('Overview', Overview()),
         tabPanel('Instructions', Instructions()),
         tabPanel('Graphical Analyis', plotOutput('graph')),
+        tabPanel('Scatterplot Analysis', plotOutput('scatter')),
         tabPanel('Tabular Analysis', tableOutput('table')),
         tabPanel('Summary Table', tableOutput('summary'), value = "sum.ui")
       )
