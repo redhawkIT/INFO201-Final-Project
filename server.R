@@ -51,10 +51,7 @@ the.server <- function(input, output) {
     filtered() %>% select(Title, Organization, Asked, Received, Anticipation, Trust, Joy, Valence)
   })
 
-
   output$graph <- renderPlot({
-    dist <- input$dist
-    n <- input$n
     filtered.table <- filtered()
     emotions <- select(filtered.table, Anger, Anticipation, Disgust, Fear, Sadness, Surprise, Trust)
     emotions.means <- c(mean(emotions$Anger), mean(emotions$Anticipation), mean(emotions$Disgust),
@@ -66,6 +63,14 @@ the.server <- function(input, output) {
             col = c("red", "orange", "yellow", "green",
                     "blue", "purple", "black"))
     
+  })
+  
+  output$scatter <- renderPlot({
+    ggplot(data = filtered()) +
+      geom_point(mapping = aes(x = Valence, y = Received), color = "red") +
+      labs(title = "Valence versus Money Received",
+           x = "Valence",
+           y = "Money Received in Dollars")
   })
   
 
@@ -93,4 +98,3 @@ the.server <- function(input, output) {
   })
 
 }
-
