@@ -1,3 +1,4 @@
+
 # Builds the server for our Project's shinyapp
 the.server <- function(input, output) {
   
@@ -190,4 +191,3 @@ the.server <- function(input, output) {
     sum.data()$endo
   })
   
-}

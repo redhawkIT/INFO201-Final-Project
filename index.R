@@ -1,6 +1,6 @@
 ## WEB SERVER
-source('./ui.R')
 source('./server.R')
+source('./ui.R')
 
 ## START APPLICATION
 shinyApp(ui = the.ui, server = the.server)
