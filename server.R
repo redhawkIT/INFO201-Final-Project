@@ -71,8 +71,30 @@ the.server <- function(input, output) {
       )
     )
   })
+  
+  output$valence.slider <- renderUI({
+    sliderInput(
+      'range',
+      label = h3('Valence Filter'),
+      min = 0, #minTODO(analysis$Valence),
+      max = max(analysis$Valence),
+      step = 0.5,
+      value = round(max(analysis$Valence)/2), #TODOround((min(analysis$Valence)+max(analysis$Valence))/2), 
+      width = '150%',
+      round = FALSE
+    )
+  })
+  
+  output$categories <- renderUI({
+    checkboxGroupInput(
+      'category',
+      label = h4('Categories of Request to Include in Analysis'),
+      choices = unique(analysis$Category),
+      selected = 'Portable'
+    )
+  })
 
-  output$ui <- renderUI({
+  output$dynamic.ui <- renderUI({
     switch(
       input$tab,
       'graph' = NULL,

@@ -1,9 +1,6 @@
 source('./client/Overview.R')
 source('./client/Instructions.R')
 
-# BUG: Error in group_by(analysis, Year) : object 'analysis' not found
-minVal <- group_by(analysis, Year) %>% summarize(mins = min(Valence)) %>% select(mins)
-
 the.ui <- fluidPage(
 
 # Sets theme using 'shinythemes'
@@ -16,30 +13,17 @@ titlePanel('UW Student Technology - Funding Statistics'),
   sidebarLayout(
     # Sidebar panel for inputs
     sidebarPanel(
+      
       # This slider will allow user to filter ouptuded data based on range of sentiments.
-      sliderInput(
-        'range',
-        label = h3('Valence Filter'),
-        min = as.numeric(ceiling(max(minVal))),
-        max = as.numeric(floor(analysis$Valence[analysis$Valence == max(analysis$Valence)]))[1],
-        step = 0.5,
-        value = as.numeric(ceiling(max(minVal))), 
-        width = '150%',
-        round = FALSE
-      ),
+      uiOutput('valence.slider'),
       
       hr(),
       
-      uiOutput('ui'),
+      uiOutput('dynamic.ui'),
   
       tags$i("If all checkboxes in below controls are unselected, results behave as if all are selected for that metric!"),
   
-      checkboxGroupInput(
-        'category',
-        label = h4('Categories of Request to Include in Analysis'),
-        choices = unique(analysis$Category),
-        selected = 'Portable'
-      ),
+      uiOutput('categories'),
   
       checkboxGroupInput(
         'year',
