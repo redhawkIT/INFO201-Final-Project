@@ -1,5 +1,45 @@
+# Builds 'the.server'
 the.server <- function(input, output) {
-
+  
+  #### DEPENDENCIES
+  ### Utilities
+  # install.packages('Hmisc')
+  ### Web Packages
+  # install.packages('shiny')
+  # install.packages("shinythemes")
+  # install.packages('httr')
+  # install.packages('jsonlite')
+  ### Data Manipulation:
+  # install.packages('dplyr')
+  # install.packages('tidyr')
+  ### Text Mining:
+  # install.packages('tidytext')
+  # install.packages('tm')
+  # install.packages('SnowballC')
+  # install.packages('syuzhet')
+  ### Visualization:
+  # install.packages('ggplot2')
+  
+  library(shiny)
+  library(shinythemes)
+  library(Hmisc)
+  library(httr)
+  library(jsonlite)
+  library(dplyr)
+  library(tidyr)
+  library(tidytext)
+  library(tm)
+  library(syuzhet)
+  library(SnowballC)
+  library(ggplot2)
+  
+  ## IMPORTS
+  source('./src/GetProposals.R')
+  source('./src/AnalyzeProposals.R')
+  
+  ## DATA COLLECTION & ANALYSIS
+  proposals <- GetProposals()
+  analysis <- AnalyzeProposals(proposals)
   
   filtered <- reactive({
     if (is.null(input$year) | is.null(input$category)) {
@@ -23,38 +63,30 @@ the.server <- function(input, output) {
         )
       }
     } else
-    return(
-      analysis %>% filter(
-        Valence <= input$range
-        & Year == input$year
-        & Category == input$category
+      return(
+        analysis %>% filter(
+          Valence <= input$range
+          & Year == input$year
+          & Category == input$category
+        )
       )
-    )
   })
   
-  # Makes table test that returns a full proposals table of 
-  # output$test <-  renderTable({
-  #   filtered()
-  # })
-
   output$ui <- renderUI({
     switch(
       input$tab,
       'graph' = NULL,
       'table' = NULL,
-      'sum.ui' = radioButtons('tab.select', "Select a Summarization:", choices = c("1", "2", "3", "4"),
-                              selected = "1")
+      'sum.ui' = radioButtons('tab.select', "Select a Summarization:", choices = c("1", "2", "3"),
+                              selected = "1", inline = T)
     )
   })
-
-  output$table <- renderTable({
-    filtered() %>% select(Title, Organization, Asked, Received, Negative, Positive, Valence)
+  
+  output$table <- renderDataTable({
+    filtered() %>% select(Title, Organization, Asked, Received, Anticipation, Trust, Joy, Valence)
   })
-
-
+  
   output$graph <- renderPlot({
-    dist <- input$dist
-    n <- input$n
     filtered.table <- filtered()
     emotions <- select(filtered.table, Anger, Anticipation, Disgust, Fear, Sadness, Surprise, Trust)
     emotions.means <- c(mean(emotions$Anger), mean(emotions$Anticipation), mean(emotions$Disgust),
@@ -65,10 +97,17 @@ the.server <- function(input, output) {
             names.arg = colnames(emotions),
             col = c("red", "orange", "yellow", "green",
                     "blue", "purple", "black"))
-    
   })
   
-
+  output$scatter <- renderPlot({
+    ggplot(data = filtered()) +
+      geom_point(mapping = aes(x = Valence, y = Received), color = "red") +
+      labs(title = "Valence versus Money Received",
+           x = "Valence",
+           y = "Money Received in Dollars")
+  })
+  
+  
   sum.data <- reactive({
     category.sums <- group_by(filtered(), Category) %>% 
       summarize(Avg.amount.asked = mean(Asked), Avg.amount.received = mean(Received),
@@ -81,16 +120,29 @@ the.server <- function(input, output) {
     valence.sums <- group_by(valence.sums, Valence.Group) %>% 
       summarize(Avg.amount.asked = mean(Asked), Avg.amount.received = mean(Received),
                 Max.received = max(Received), Median.recieved = median(Received), Standard.dev = sd(Received))
-    return(list(cat = category.sums, val = valence.sums))
+    endorsement.sums <- filtered() %>% 
+      mutate(Endorsements = unlist(filtered()$Endorsements, use.names = FALSE))
+    endorsement.sums <- mutate(endorsement.sums, Endorsement.group = cut(endorsement.sums$Endorsements,
+                                                                         breaks = c(-1, 5, 10, 20,
+                                                                                    30, 45, 80, 100, 200), 
+                                                                         labels = c("-1 - 5", "5 - 10",
+                                                                                    "10 - 20", "20 - 30",
+                                                                                    "30 - 45", "45 - 80", 
+                                                                                    "80 - 100", "100 - 200")))
+    endorsement.sums <- group_by(endorsement.sums, Endorsement.group) %>% 
+      summarize(Avg.amount.asked = mean(Asked), Avg.amount.received = mean(Received),
+                Max.received = max(Received), Median.recieved = median(Received), Standard.dev = sd(Received))
+    return(list(cat = category.sums, val = valence.sums, endo = endorsement.sums))
   })
   
   output$summary <- renderTable({
     if(input$tab.select == '1') {
       sum.data()$cat
-    } else {
+    } else if(input$tab.select == '2') {
       sum.data()$val
+    } else {
+      sum.data()$endo
     }
   })
-
+  
 }
-
