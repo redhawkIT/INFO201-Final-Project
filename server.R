@@ -71,12 +71,17 @@ the.server <- function(input, output) {
         )
       )
   })
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 09fb14318d3fcc2356178d9c69368c3f379590e3
   output$ui <- renderUI({
     switch(
       input$tab,
       'graph' = NULL,
       'table' = NULL,
+<<<<<<< HEAD
       'sum.ui' = radioButtons('tab.select', "Select a Summarization:", choices = c("1", "2", "3"),
                               selected = "1", inline = T)
     )
@@ -86,6 +91,17 @@ the.server <- function(input, output) {
     filtered() %>% select(Title, Organization, Asked, Received, Anticipation, Trust, Joy, Valence)
   })
   
+=======
+      'sum.ui' = radioButtons('tab.select', "Select a Summarization:", choices = c("1", "2", "3", "4"),
+                              selected = "1", inline = T)
+    )
+  })
+
+  output$table <- renderDataTable({
+    filtered() %>% select(Title, Organization, Asked, Received, Anticipation, Trust, Joy, Valence)
+  })
+
+>>>>>>> 09fb14318d3fcc2356178d9c69368c3f379590e3
   output$graph <- renderPlot({
     filtered.table <- filtered()
     emotions <- select(filtered.table, Anger, Anticipation, Disgust, Fear, Sadness, Surprise, Trust)
@@ -97,6 +113,17 @@ the.server <- function(input, output) {
             names.arg = colnames(emotions),
             col = c("red", "orange", "yellow", "green",
                     "blue", "purple", "black"))
+<<<<<<< HEAD
+=======
+  })
+  
+  output$scatter <- renderPlot({
+    ggplot(data = filtered()) +
+      geom_point(mapping = aes(x = Valence, y = Received), color = "red") +
+      labs(title = "Valence versus Money Received",
+           x = "Valence",
+           y = "Money Received in Dollars")
+>>>>>>> 09fb14318d3fcc2356178d9c69368c3f379590e3
   })
   
   output$scatter <- renderPlot({
@@ -144,5 +171,9 @@ the.server <- function(input, output) {
       sum.data()$endo
     }
   })
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 09fb14318d3fcc2356178d9c69368c3f379590e3
 }
