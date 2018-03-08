@@ -47,8 +47,8 @@ the.server <- function(input, output) {
     )
   })
 
-  output$table <- renderTable({
-    filtered() %>% select(Title, Organization, Asked, Received, Negative, Positive, Valence)
+  output$table <- renderDataTable({
+    filtered() %>% select(Title, Organization, Asked, Received, Anticipation, Trust, Joy, Valence)
   })
 
 

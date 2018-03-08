@@ -18,22 +18,29 @@ sidebarLayout(
       label = h3('Valence Filter'),
       min = as.numeric(ceiling(max(minVal))),
       max = as.numeric(floor(analysis$Valence[analysis$Valence == max(analysis$Valence)]))[1],
-      step = 1,
+      step = 0.5,
       value = as.numeric(ceiling(max(minVal))), 
-      width = '200%',
+      width = '150%',
       round = FALSE
+    ),
+    
+    hr(),
+    
+    tags$i(
+      "If all checkboxes of a given option below are unchecked, analysis pane
+      will display as if all were checked!"
     ),
 
     checkboxGroupInput(
       'category',
-      label = h3('Categories of Request to Include in Analysis'),
+      label = h4('Categories of Request to Include in Analysis'),
       choices = unique(analysis$Category),
       selected = 'Portable'
     ),
 
     checkboxGroupInput(
       'year',
-      label = h3('Which years to include?'),
+      label = h4('Which years to include?'),
       choices = list(
         '2014' = 2014,
         '2015' = 2015,
@@ -56,7 +63,17 @@ sidebarLayout(
         tabPanel('Overview', Overview()),
         tabPanel('Instructions', Instructions()),
         tabPanel('Graphical Analyis', plotOutput('graph')),
-        tabPanel('Tabular Analysis', tableOutput('table')),
+        tabPanel('Tabular Analysis',
+          # radioButtons(
+          #   'table.radio', label = 'How to sort table',
+          #   choices = c(
+          #     'a' = 1,
+          #     'b' = 2,
+          #     'c' = 3
+          #   )
+          # ),
+          dataTableOutput('table')
+        ),
         tabPanel('Summary Table', tableOutput('summary'), value = "sum.ui")
       )
     )
