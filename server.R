@@ -1,5 +1,45 @@
+# Builds 'the.server'
 the.server <- function(input, output) {
-
+  
+  #### DEPENDENCIES
+  ### Utilities
+  # install.packages('Hmisc')
+  ### Web Packages
+  # install.packages('shiny')
+  # install.packages("shinythemes")
+  # install.packages('httr')
+  # install.packages('jsonlite')
+  ### Data Manipulation:
+  # install.packages('dplyr')
+  # install.packages('tidyr')
+  ### Text Mining:
+  # install.packages('tidytext')
+  # install.packages('tm')
+  # install.packages('SnowballC')
+  # install.packages('syuzhet')
+  ### Visualization:
+  # install.packages('ggplot2')
+  
+  library(shiny)
+  library(shinythemes)
+  library(Hmisc)
+  library(httr)
+  library(jsonlite)
+  library(dplyr)
+  library(tidyr)
+  library(tidytext)
+  library(tm)
+  library(syuzhet)
+  library(SnowballC)
+  library(ggplot2)
+  
+  ## IMPORTS
+  source('./src/GetProposals.R')
+  source('./src/AnalyzeProposals.R')
+  
+  ## DATA COLLECTION & ANALYSIS
+  proposals <- GetProposals()
+  analysis <- AnalyzeProposals(proposals)
   
   filtered <- reactive({
     if (is.null(input$year) | is.null(input$category)) {
@@ -31,11 +71,6 @@ the.server <- function(input, output) {
       )
     )
   })
-  
-  # Makes table test that returns a full proposals table of 
-  # output$test <-  renderTable({
-  #   filtered()
-  # })
 
   output$ui <- renderUI({
     switch(
@@ -43,7 +78,7 @@ the.server <- function(input, output) {
       'graph' = NULL,
       'table' = NULL,
       'sum.ui' = radioButtons('tab.select', "Select a Summarization:", choices = c("1", "2", "3", "4"),
-                              selected = "1")
+                              selected = "1", inline = T)
     )
   })
 
@@ -62,7 +97,6 @@ the.server <- function(input, output) {
             names.arg = colnames(emotions),
             col = c("red", "orange", "yellow", "green",
                     "blue", "purple", "black"))
-    
   })
   
   output$scatter <- renderPlot({
