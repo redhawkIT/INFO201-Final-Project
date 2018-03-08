@@ -73,11 +73,12 @@ the.server <- function(input, output) {
   })
   
   output$valence.slider <- renderUI({
+    minVal <- group_by(analysis, Year) %>% summarize(mins = min(Valence)) %>% select(mins)
     sliderInput(
       'range',
       label = h3('Valence Filter'),
-      min = 0, #minTODO(analysis$Valence),
-      max = max(analysis$Valence),
+      min = ceiling(max(minVal))[1],
+      max = max(floor(analysis$Valence)),
       step = 0.5,
       value = round(max(analysis$Valence)/2), #TODOround((min(analysis$Valence)+max(analysis$Valence))/2), 
       width = '150%',
